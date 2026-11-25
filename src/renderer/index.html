@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GameBoxPC · 多账号网页游戏盒子</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Chrome 双层顶栏：标签栏 (42px) + 导航地址栏 (46px) = 88px -->
+    <header id="chromeHeader">
+      <!-- 第一层：Chrome 标签栏 -->
+      <div id="tabStrip">
+        <div class="tabstrip-brand" title="GameBoxPC 多账号网页游戏盒子">
+          <div class="brand-mark">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="4" stroke="currentColor" stroke-width="1.9" />
+              <path d="M8 12h4M10 10v4" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+              <circle cx="15.5" cy="11" r="1.1" fill="currentColor" />
+              <circle cx="17.5" cy="13" r="1.1" fill="currentColor" />
+            </svg>
+          </div>
+          <span id="onlineBadge" class="online-pill" title="当前在线账号 / 最大同时在线上限">0/10</span>
+        </div>
+
+        <div id="tabList" class="tab-list" role="tablist"></div>
+
+        <button id="btnAdd" class="tab-new-btn" title="添加新账号（新建标签页）" aria-label="添加新账号">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+        </button>
+
+        <div class="tabstrip-drag-spacer"></div>
+      </div>
+
+      <!-- 第二层：Chrome 工具与地址栏 -->
+      <div id="toolbar">
+        <div class="toolbar-left">
+          <button id="btnToggleSidebar" class="chrome-icon-btn" title="展开 / 折叠左侧账号栏">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="2.5" />
+              <path d="M9 4v16" />
+            </svg>
+          </button>
+          <button id="btnReload" class="chrome-icon-btn" title="刷新当前账号页面">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 12a8 8 0 1 1-2.34-5.66L20 8.5" />
+              <path d="M20 4v4.5h-4.5" />
+            </svg>
+          </button>
+          <button id="btnStartAll" class="toolbar-pill-btn" title="一键启动全部账号（最多达到上限）">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M8 5.5v13l10.5-6.5L8 5.5z" />
+            </svg>
+            <span>全启</span>
+          </button>
+        </div>
+
+        <!-- Chrome 胶囊地址栏 (Omnibox) -->
+        <div id="omnibox" class="omnibox">
+          <button id="btnOmniboxAcc" class="omnibox-acc-pill" title="点击编辑当前账号信息">
+            <span id="omniboxStatusDot" class="omnibox-dot"></span>
+            <span id="activeTitle" class="omnibox-account-name">未选择账号</span>
+          </button>
+          <input
+            id="omniboxUrl"
+            class="omnibox-input"
+            type="text"
+            spellcheck="false"
+            placeholder="输入游戏网址并按 Enter 跳转..."
+            title="当前账号游戏网址（修改后按 Enter 保存并跳转）"
+          />
+          <span id="omniboxFps" class="omnibox-fps hidden">60 FPS</span>
+        </div>
+
+        <div class="toolbar-right">
+          <div id="gridSwitcher" class="antd-segmented" title="切换单屏 / 双分屏布局">
+            <button data-grid="1">1屏</button>
+            <button data-grid="2">2分屏</button>
+          </div>
+
+          <div class="toolbar-divider"></div>
+
+          <button id="btnGlobalMute" class="chrome-icon-btn" title="全局一键静音">
+            <svg class="icon-vol-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H3v6h3l5 4V5z" />
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+              <path d="M18.36 5.64a9 9 0 0 1 0 12.73" />
+            </svg>
+            <svg class="icon-vol-off hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 5L6 9H3v6h3l5 4V5z" />
+              <path d="M22 9l-6 6M16 9l6 6" />
+            </svg>
+          </button>
+
+          <button id="btnDevTools" class="chrome-icon-btn" title="打开当前账号开发者调试 (DevTools)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M8 9l-4 3 4 3" />
+              <path d="M16 9l4 3-4 3" />
+              <path d="M13.5 6l-3 12" />
+            </svg>
+          </button>
+
+          <button id="btnHideTray" class="chrome-icon-btn" title="最小化到系统托盘后台挂机">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+              <path d="M12 4v10" />
+              <path d="M8.5 10.5L12 14l3.5-3.5" />
+            </svg>
+          </button>
+
+          <button id="btnTheme" class="chrome-icon-btn" title="切换浅色 / 深色主题">
+            <svg class="icon-theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="icon-theme-sun hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          </button>
+
+          <button id="btnSettings" class="chrome-icon-btn" title="全局设置与保活配置">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- 下方工作区：Chrome Side Panel + 游戏画布 -->
+    <div id="workspace">
+      <aside id="sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-header">
+            <div class="sidebar-title-wrap">
+              <span class="sidebar-title">账号列表</span>
+              <span id="sidebarCount" class="sidebar-count">0</span>
+            </div>
+            <button id="btnAddSidebar" class="sidebar-add-btn" title="添加新账号">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round">
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+              <span>新建</span>
+            </button>
+          </div>
+
+          <div id="accountList" class="account-list"></div>
+
+          <div class="sidebar-footer">
+            <button id="btnDataDir" class="footer-btn" title="打开便携 data 数据目录">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z" />
+              </svg>
+              <span>数据目录</span>
+            </button>
+            <button id="btnQuit" class="footer-btn danger" title="退出并下线全部账号">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <path d="M16 17l5-5-5-5" />
+                <path d="M21 12H9" />
+              </svg>
+              <span>退出</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- 游戏画布底层（WebContentsView 覆盖在其上） -->
+      <main id="stage">
+        <div id="slotHighlights"></div>
+        <div id="emptyStage" class="empty-stage">
+          <div class="empty-card">
+            <div class="empty-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="4" />
+                <path d="M8 12h4M10 10v4" />
+                <circle cx="15.5" cy="11" r="1.1" fill="currentColor" stroke="none" />
+                <circle cx="17.5" cy="13" r="1.1" fill="currentColor" stroke="none" />
+              </svg>
+            </div>
+            <div class="empty-title">点击上方标签或左侧账号启动游戏</div>
+            <div class="empty-sub">每个账号独立隔离 Cookie 与缓存 · 切后台或最小化到托盘不断线</div>
+            <div class="empty-actions">
+              <button id="btnEmptyAdd" class="btn btn-primary">添加新账号</button>
+              <button id="btnEmptyStartAll" class="btn btn-default">一键启动全部</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- 账号操作右键/弹出菜单 -->
+  <div id="ctxMenu" class="ctx-menu hidden"></div>
+
+  <!-- 添加 / 编辑账号弹窗 -->
+  <div id="accountModal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="accountModalTitle">添加账号</h3>
+        <button id="btnCloseAccX" class="modal-close-btn" aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>账号名称</label>
+          <input id="inputAccName" type="text" placeholder="例如：账号 1、大号" />
+        </div>
+        <div class="form-group">
+          <label>备注（可选）</label>
+          <input id="inputAccNote" type="text" placeholder="例如：区服 / 支付宝尾号" />
+        </div>
+        <div class="form-group">
+          <label>游戏网址</label>
+          <input id="inputAccUrl" type="text" placeholder="https://www.wanyiwan.top/game/..." />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelAcc" class="btn btn-default">取消</button>
+        <button id="btnSaveAcc" class="btn btn-primary">确定</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 设置弹窗 -->
+  <div id="settingsModal" class="modal-backdrop hidden">
+    <div class="modal modal-lg">
+      <div class="modal-header">
+        <h3>全局设置</h3>
+        <button id="btnCloseSettingsX" class="modal-close-btn" aria-label="关闭">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6L6 18" />
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>后台未显示账号降帧（省 CPU/显卡且不断线）</label>
+          <select id="selectBgFps">
+            <option value="0">不限帧（原生 60 FPS，最耗资源）</option>
+            <option value="15">15 FPS（均衡）</option>
+            <option value="10">10 FPS（推荐，10 开流畅）</option>
+            <option value="5">5 FPS（极限省电）</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label class="switch-row">
+            <span class="switch-text">
+              <span class="switch-title">智能音频</span>
+              <span class="switch-desc">仅当前焦点账号发声，后台账号自动静音</span>
+            </span>
+            <span class="antd-switch">
+              <input id="chkFocusAudio" type="checkbox" />
+              <span class="switch-track"></span>
+            </span>
+          </label>
+        </div>
+        <div class="form-row">
+          <label class="switch-row">
+            <span class="switch-text">
+              <span class="switch-title">关闭时最小化到系统托盘</span>
+              <span class="switch-desc">点击窗口关闭按钮后隐藏到托盘继续后台挂机</span>
+            </span>
+            <span class="antd-switch">
+              <input id="chkCloseToTray" type="checkbox" />
+              <span class="switch-track"></span>
+            </span>
+          </label>
+        </div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>老板键（一键隐藏并静音）</label>
+            <input id="inputBossKey" type="text" placeholder="例如：Alt+Q" />
+          </div>
+          <div class="form-group">
+            <label>最大同时在线账号数</label>
+            <input id="inputMaxConcurrent" type="number" min="1" max="30" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>新建账号默认游戏网址</label>
+          <input id="inputDefaultUrl" type="text" />
+        </div>
+        <div class="data-path-box">
+          <span class="data-path-label">便携数据目录</span>
+          <code id="txtDataDir"></code>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnCancelSettings" class="btn btn-default">取消</button>
+        <button id="btnSaveSettings" class="btn btn-primary">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>

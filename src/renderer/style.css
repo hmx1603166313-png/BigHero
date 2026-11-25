@@ -1,0 +1,1419 @@
+/* ==========================================================================
+   GameBoxPC · Chrome Refresh 2023 + Ant Design Unified UI
+   支持浅色（Chrome 经典浅蓝）与深色主题一键切换，细节统一打磨
+   ========================================================================== */
+
+:root,
+[data-theme="light"] {
+  --frame-bg: #d3e3fd;
+  --toolbar-bg: #ffffff;
+  --workspace-bg: #f3f6fc;
+  --surface-bg: #ffffff;
+  --surface-subtle: #f5f7fa;
+  --surface-hover: rgba(31, 31, 31, 0.06);
+  --surface-active: rgba(31, 31, 31, 0.11);
+  --tab-hover: rgba(255, 255, 255, 0.48);
+  --tab-sep: rgba(11, 87, 208, 0.22);
+  --omnibox-bg: #edf2fa;
+  --omnibox-hover: #e3ebf8;
+  --omnibox-focus: #ffffff;
+  --border: #dfe3ea;
+  --border-subtle: #eceff4;
+  --divider: #d6dbe3;
+  --text: #1f1f1f;
+  --text-secondary: #5f6368;
+  --text-muted: #80868b;
+  --accent: #0b57d0;
+  --accent-hover: #1a67e0;
+  --accent-soft: #e8f0fe;
+  --accent-soft-hover: #d7e5fd;
+  --accent-border: #a8c7fa;
+  --accent-on: #ffffff;
+  --green: #188038;
+  --green-dot: #1e8e3e;
+  --green-soft: #e6f4ea;
+  --danger: #d93025;
+  --danger-soft: #fce8e6;
+  --danger-hover: #fad2cf;
+  --seg-bg: #edf2fa;
+  --seg-active-bg: #ffffff;
+  --seg-active-shadow: 0 1px 3px rgba(15, 23, 42, 0.12), 0 1px 1px rgba(15, 23, 42, 0.06);
+  --card-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --menu-shadow: 0 6px 20px rgba(15, 23, 42, 0.14), 0 2px 6px rgba(15, 23, 42, 0.08);
+  --modal-shadow: 0 20px 48px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(15, 23, 42, 0.1);
+  --stage-bg: #eef2f9;
+  --stage-grad: radial-gradient(circle at 50% 35%, #ffffff 0%, #eef2f9 75%);
+  --scrollbar-thumb: rgba(60, 64, 67, 0.24);
+  --scrollbar-hover: rgba(60, 64, 67, 0.44);
+  --scrollbar-active: rgba(60, 64, 67, 0.62);
+  --tabstrip-h: 42px;
+  --toolbar-h: 46px;
+}
+
+[data-theme="dark"] {
+  --frame-bg: #202124;
+  --toolbar-bg: #35363a;
+  --workspace-bg: #2b2c30;
+  --surface-bg: #292a2d;
+  --surface-subtle: #232427;
+  --surface-hover: rgba(255, 255, 255, 0.09);
+  --surface-active: rgba(255, 255, 255, 0.15);
+  --tab-hover: rgba(255, 255, 255, 0.09);
+  --tab-sep: rgba(255, 255, 255, 0.16);
+  --omnibox-bg: #202124;
+  --omnibox-hover: #28292c;
+  --omnibox-focus: #1b1c1f;
+  --border: #3c4043;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --divider: rgba(255, 255, 255, 0.14);
+  --text: #e8eaed;
+  --text-secondary: #9aa0a6;
+  --text-muted: #80868b;
+  --accent: #8ab4f8;
+  --accent-hover: #aecbfa;
+  --accent-soft: rgba(138, 180, 248, 0.16);
+  --accent-soft-hover: rgba(138, 180, 248, 0.24);
+  --accent-border: rgba(138, 180, 248, 0.4);
+  --accent-on: #062e6f;
+  --green: #81c995;
+  --green-dot: #34a853;
+  --green-soft: rgba(129, 201, 149, 0.16);
+  --danger: #f28b82;
+  --danger-soft: rgba(242, 139, 130, 0.15);
+  --danger-hover: rgba(242, 139, 130, 0.25);
+  --seg-bg: #202124;
+  --seg-active-bg: #3c4043;
+  --seg-active-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  --menu-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+  --modal-shadow: 0 20px 48px rgba(0, 0, 0, 0.65);
+  --stage-bg: #202124;
+  --stage-grad: radial-gradient(circle at 50% 35%, #2b2c30 0%, #202124 72%);
+  --scrollbar-thumb: rgba(154, 160, 166, 0.3);
+  --scrollbar-hover: rgba(154, 160, 166, 0.55);
+  --scrollbar-active: rgba(154, 160, 166, 0.75);
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--frame-bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Microsoft YaHei UI", "PingFang SC", "Noto Sans CJK SC", "WenQuanYi Micro Hei", system-ui, -apple-system, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- 全局现代细滚动条 ---------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: transparent;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.15s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-hover);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background-color: var(--scrollbar-active);
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   1. Chrome 双层顶栏（42px 标签栏 + 46px 导航地址栏 = 88px）
+   ========================================================================== */
+#chromeHeader {
+  height: calc(var(--tabstrip-h) + var(--toolbar-h));
+  min-height: calc(var(--tabstrip-h) + var(--toolbar-h));
+  display: flex;
+  flex-direction: column;
+  background: var(--frame-bg);
+  position: relative;
+  z-index: 20;
+}
+
+/* ---------- 1.1 标签栏 ---------- */
+#tabStrip {
+  height: var(--tabstrip-h);
+  min-height: var(--tabstrip-h);
+  display: flex;
+  align-items: flex-end;
+  padding: 0 142px 0 10px;
+  background: var(--frame-bg);
+  -webkit-app-region: drag;
+  gap: 2px;
+}
+
+.tabstrip-brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  margin-bottom: 4px;
+  padding: 0 8px 0 4px;
+  flex-shrink: 0;
+  -webkit-app-region: drag;
+}
+
+.brand-mark {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--accent);
+  color: var(--accent-on);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(11, 87, 208, 0.25);
+}
+
+.brand-mark svg {
+  width: 15px;
+  height: 15px;
+}
+
+.online-pill {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--toolbar-bg);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  line-height: 18px;
+}
+
+.tab-list {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: calc(100% - 140px);
+  padding: 8px 8px 0;
+  gap: 0;
+  -webkit-app-region: no-drag;
+}
+
+.tab-list::-webkit-scrollbar {
+  height: 3px;
+}
+
+.tab-list::-webkit-scrollbar-thumb {
+  border: 0;
+}
+
+/* 单个 Chrome 标签页 */
+.chrome-tab {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  min-width: 120px;
+  max-width: 220px;
+  padding: 0 8px 0 11px;
+  border-radius: 10px 10px 0 0;
+  color: var(--text-secondary);
+  background: transparent;
+  cursor: pointer;
+  flex: 0 1 176px;
+  transition: background-color 0.14s ease, color 0.14s ease;
+  -webkit-app-region: no-drag;
+}
+
+/* 非激活标签之间的竖线（悬停或紧邻激活标签时自动隐藏） */
+.chrome-tab:not(.active):not(:hover):not(:last-child):not(:has(+ .active)):not(:has(+ :hover))::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 9px;
+  width: 1px;
+  height: 16px;
+  background: var(--tab-sep);
+  pointer-events: none;
+}
+
+.chrome-tab:hover {
+  background: var(--tab-hover);
+  color: var(--text);
+}
+
+.chrome-tab.drag-over {
+  box-shadow: inset 2px 0 0 var(--accent);
+}
+
+/* 激活标签：与下方 Toolbar 无缝融合 + 清晰 SVG 反圆角 */
+.chrome-tab.active {
+  background: var(--toolbar-bg);
+  color: var(--text);
+  z-index: 2;
+}
+
+.chrome-tab.active::before,
+.chrome-tab.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background: var(--toolbar-bg);
+  pointer-events: none;
+}
+
+.chrome-tab.active::before {
+  left: -10px;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M10 0v10H0A10 10 0 0 0 10 0z' fill='%23000'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M10 0v10H0A10 10 0 0 0 10 0z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.chrome-tab.active::after {
+  right: -10px;
+  top: auto;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M0 0v10h10A10 10 0 0 1 0 0z' fill='%23000'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M0 0v10h10A10 10 0 0 1 0 0z' fill='%23000'/%3E%3C/svg%3E");
+}
+
+.tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: var(--text-muted);
+  opacity: 0.65;
+}
+
+.tab-dot.running {
+  background: var(--green-dot);
+  opacity: 1;
+  box-shadow: 0 0 0 2px var(--green-soft);
+}
+
+.tab-dot.crashed {
+  background: var(--danger);
+  opacity: 1;
+}
+
+.tab-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chrome-tab.active .tab-title {
+  font-weight: 600;
+}
+
+.tab-icon-btn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+  transition: background-color 0.12s, color 0.12s, opacity 0.12s;
+}
+
+.chrome-tab:not(.active):not(:hover) .btn-tab-power {
+  opacity: 0.45;
+}
+
+.tab-icon-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.tab-icon-btn:hover {
+  background: var(--surface-active);
+  color: var(--text);
+}
+
+.tab-icon-btn.muted {
+  color: var(--danger);
+}
+
+.tab-new-btn {
+  width: 28px;
+  height: 28px;
+  margin: 0 0 4px 2px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  -webkit-app-region: no-drag;
+  transition: background-color 0.12s, color 0.12s;
+}
+
+.tab-new-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.tab-new-btn:hover {
+  background: var(--tab-hover);
+  color: var(--text);
+}
+
+.tabstrip-drag-spacer {
+  flex: 1;
+  height: 100%;
+  -webkit-app-region: drag;
+}
+
+/* ---------- 1.2 导航与地址栏 ---------- */
+#toolbar {
+  height: var(--toolbar-h);
+  min-height: var(--toolbar-h);
+  background: var(--toolbar-bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  gap: 8px;
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.chrome-icon-btn {
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color 0.12s, color 0.12s, transform 0.08s;
+}
+
+.chrome-icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.chrome-icon-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.chrome-icon-btn:active {
+  background: var(--surface-active);
+  transform: scale(0.95);
+}
+
+.chrome-icon-btn.active-state {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chrome-icon-btn.active-warn {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.toolbar-pill-btn {
+  height: 30px;
+  padding: 0 11px 0 9px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-bg);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background-color 0.12s, border-color 0.12s;
+}
+
+.toolbar-pill-btn svg {
+  width: 13px;
+  height: 13px;
+  color: var(--green-dot);
+}
+
+.toolbar-pill-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent-border);
+}
+
+/* Chrome 胶囊地址栏 (Omnibox) */
+.omnibox {
+  flex: 1;
+  min-width: 180px;
+  height: 32px;
+  background: var(--omnibox-bg);
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px 0 4px;
+  gap: 8px;
+  transition: background-color 0.14s, border-color 0.14s, box-shadow 0.14s;
+}
+
+.omnibox:hover {
+  background: var(--omnibox-hover);
+}
+
+.omnibox:focus-within {
+  background: var(--omnibox-focus);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.omnibox-acc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border: none;
+  border-radius: 999px;
+  background: var(--toolbar-bg);
+  color: var(--text);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  max-width: 156px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition: background-color 0.12s;
+}
+
+.omnibox-acc-pill:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.omnibox-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.omnibox-dot.running {
+  background: var(--green-dot);
+}
+
+.omnibox-dot.crashed {
+  background: var(--danger);
+}
+
+.omnibox-account-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.omnibox-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font-size: 13.5px;
+  font-family: inherit;
+  user-select: text;
+}
+
+.omnibox-input::placeholder {
+  color: var(--text-muted);
+}
+
+.omnibox-fps {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--green-soft);
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.omnibox-fps.bg {
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+}
+
+/* Ant Design 风格分段选择器（宫格切换） */
+.antd-segmented {
+  display: flex;
+  align-items: center;
+  background: var(--seg-bg);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.antd-segmented button {
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background-color 0.14s, color 0.14s, box-shadow 0.14s;
+}
+
+.antd-segmented button:hover {
+  color: var(--text);
+}
+
+.antd-segmented button.active {
+  background: var(--seg-active-bg);
+  color: var(--accent);
+  font-weight: 600;
+  box-shadow: var(--seg-active-shadow);
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--divider);
+  margin: 0 4px;
+}
+
+/* ==========================================================================
+   2. 下方工作区：Chrome Side Panel + Ant Design 账号列表 + 游戏画布
+   ========================================================================== */
+#workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: var(--workspace-bg);
+}
+
+#sidebar {
+  width: 210px;
+  flex-shrink: 0;
+  height: 100%;
+  padding: 8px 6px 8px 8px;
+  background: var(--workspace-bg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#sidebar.collapsed {
+  width: 0 !important;
+  padding: 0;
+  overflow: hidden;
+}
+
+.sidebar-card {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.sidebar-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.sidebar-count {
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 0 6px;
+  min-width: 20px;
+  text-align: center;
+  border-radius: 999px;
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.sidebar-add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 26px;
+  padding: 0 10px 0 8px;
+  border: none;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 12.5px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.12s;
+}
+
+.sidebar-add-btn svg {
+  width: 13px;
+  height: 13px;
+}
+
+.sidebar-add-btn:hover {
+  background: var(--accent-soft-hover);
+}
+
+.account-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 6px;
+}
+
+/* Ant Design 风格列表项（头像角标 + 左侧高亮条 + 悬停操作） */
+.account-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 8px 8px 10px;
+  margin-bottom: 3px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.12s, border-color 0.12s;
+}
+
+.account-item:hover {
+  background: var(--surface-subtle);
+}
+
+.account-item.active {
+  background: var(--accent-soft);
+  border-color: var(--accent-border);
+}
+
+.account-item.active::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 9px;
+  bottom: 9px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.account-item.drag-over {
+  border-top: 2px solid var(--accent);
+}
+
+.acc-avatar {
+  position: relative;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.account-item.active .acc-avatar {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-on);
+}
+
+.status-dot {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  border: 2px solid var(--surface-bg);
+}
+
+.account-item.active .status-dot {
+  border-color: var(--accent-soft);
+}
+
+.status-dot.running {
+  background: var(--green-dot);
+}
+
+.status-dot.crashed {
+  background: var(--danger);
+}
+
+.acc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.acc-name {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.account-item.active .acc-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.acc-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fps-tag {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--surface-subtle);
+  color: var(--text-secondary);
+  line-height: 17px;
+}
+
+.fps-tag.fg {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.acc-btns {
+  display: flex;
+  gap: 1px;
+  opacity: 0;
+  transition: opacity 0.12s;
+}
+
+.account-item:hover .acc-btns,
+.account-item.active .acc-btns {
+  opacity: 1;
+}
+
+.mini-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background-color 0.12s, color 0.12s;
+}
+
+.mini-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.mini-btn:hover {
+  background: var(--surface-active);
+  color: var(--text);
+}
+
+.mini-btn.muted {
+  color: var(--danger);
+  opacity: 1;
+}
+
+.sidebar-footer {
+  padding: 8px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  gap: 6px;
+}
+
+.footer-btn {
+  flex: 1;
+  height: 30px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-bg);
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  transition: background-color 0.12s, color 0.12s, border-color 0.12s;
+}
+
+.footer-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.footer-btn:hover {
+  background: var(--surface-subtle);
+  color: var(--text);
+  border-color: var(--accent-border);
+}
+
+.footer-btn.danger {
+  color: var(--danger);
+}
+
+.footer-btn.danger:hover {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+
+/* ---------- 游戏画布底层 ---------- */
+#stage {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  background: var(--stage-bg);
+  overflow: hidden;
+}
+
+#slotHighlights {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.slot-border {
+  position: fixed;
+  border: 2px solid var(--accent);
+  border-radius: 4px;
+  pointer-events: none;
+  box-sizing: border-box;
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.empty-stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--stage-grad);
+}
+
+.empty-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 10px;
+  padding: 36px 42px;
+  border-radius: 16px;
+  background: var(--surface-bg);
+  border: 1px solid var(--border);
+  box-shadow: var(--card-shadow);
+}
+
+.empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.empty-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.empty-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.empty-sub {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.empty-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* ==========================================================================
+   3. Ant Design + Chrome 统一按钮、右键菜单、弹窗与开关
+   ========================================================================== */
+.btn {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 13.5px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.14s, border-color 0.14s, color 0.14s, box-shadow 0.14s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-on);
+  font-weight: 600;
+}
+
+.btn-primary:hover {
+  background: var(--accent-hover);
+}
+
+.btn-default {
+  background: var(--surface-bg);
+  border-color: var(--border);
+  color: var(--text);
+}
+
+.btn-default:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* 右键菜单（带图标） */
+.ctx-menu {
+  position: fixed;
+  min-width: 210px;
+  background: var(--surface-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 5px;
+  box-shadow: var(--menu-shadow);
+  z-index: 200;
+  animation: popIn 0.12s ease-out;
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.ctx-item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+  transition: background-color 0.1s;
+}
+
+.ctx-item svg {
+  width: 15px;
+  height: 15px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.ctx-item:hover {
+  background: var(--surface-hover);
+}
+
+.ctx-item.danger {
+  color: var(--danger);
+}
+
+.ctx-item.danger svg {
+  color: var(--danger);
+}
+
+.ctx-item.danger:hover {
+  background: var(--danger-soft);
+}
+
+.ctx-sep {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 4px 6px;
+}
+
+/* Ant Design 风格弹窗 */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+}
+
+.modal {
+  width: 440px;
+  max-width: 92vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--modal-shadow);
+  animation: popIn 0.15s ease-out;
+  overflow: hidden;
+}
+
+.modal-lg {
+  width: 520px;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.modal-close-btn {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.12s, color 0.12s;
+}
+
+.modal-close-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-close-btn:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 16px 20px;
+  overflow-y: auto;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--surface-subtle);
+  color: var(--text);
+  font-size: 13.5px;
+  font-family: inherit;
+  outline: none;
+  user-select: text;
+  transition: border-color 0.14s, background-color 0.14s, box-shadow 0.14s;
+}
+
+.form-group select {
+  appearance: none;
+  padding-right: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2380868b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+.form-group input:hover,
+.form-group select:hover {
+  border-color: var(--accent-border);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  background: var(--surface-bg);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.form-row {
+  margin-bottom: 12px;
+}
+
+/* Ant Design 风格 Switch 开关行 */
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-subtle);
+  cursor: pointer;
+  transition: border-color 0.14s;
+}
+
+.switch-row:hover {
+  border-color: var(--accent-border);
+}
+
+.switch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.switch-title {
+  font-size: 13.5px;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.switch-desc {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.antd-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.antd-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-track {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--text-muted);
+  opacity: 0.55;
+  position: relative;
+  transition: background-color 0.18s ease, opacity 0.18s ease;
+}
+
+.switch-track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.18s ease;
+}
+
+.antd-switch input:checked + .switch-track {
+  background: var(--accent);
+  opacity: 1;
+}
+
+.antd-switch input:checked + .switch-track::after {
+  transform: translateX(16px);
+}
+
+.data-path-box {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: var(--surface-subtle);
+  border: 1px solid var(--border-subtle);
+  font-size: 12px;
+  color: var(--text-secondary);
+  word-break: break-all;
+  user-select: text;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.data-path-label {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.data-path-box code {
+  color: var(--accent);
+  font-family: Consolas, "Cascadia Mono", monospace;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 20px 16px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 400;
+  box-shadow: var(--menu-shadow);
+  animation: popIn 0.14s ease-out;
+}
+
+.hidden {
+  display: none !important;
+}

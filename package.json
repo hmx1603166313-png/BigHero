@@ -1,0 +1,52 @@
+{
+  "name": "gamebox-pc",
+  "version": "1.0.0",
+  "description": "Windows 多账号网页游戏盒子（多开隔离、多宫格同屏、后台防断线与智能降帧）",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "node -e \"const {spawn}=require('child_process');const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;const args=['.'];if(process.platform==='linux'&&process.getuid&&process.getuid()===0)args.push('--no-sandbox');const p=spawn(require('electron'),args,{stdio:'inherit',env});p.on('exit',c=>process.exit(c??0));\"",
+    "pack:win": "electron-builder --win dir --x64",
+    "dist:win": "electron-builder --win nsis --x64",
+    "dist:win:zip": "electron-builder --win zip --x64"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron": "^33.3.1",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.gamebox.pc",
+    "productName": "GameBoxPC",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.png",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "signAndEditExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "GameBoxPC",
+      "uninstallDisplayName": "GameBoxPC",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true,
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    }
+  }
+}
